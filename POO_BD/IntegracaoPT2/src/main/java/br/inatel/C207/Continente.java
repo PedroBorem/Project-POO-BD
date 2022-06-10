@@ -1,12 +1,15 @@
 package br.inatel.C207;
 
-public class Curso {
+public class Continente {
 
+    public int idContinente;
     private String nome;
-    public int id;
 
-    public Curso(String nome) {
+    public Continente(String nome) {
         this.nome = nome;
+    }
+
+    public Continente(){
     }
 
     public String getNome() {

@@ -3,15 +3,14 @@ package br.inatel.C207;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class AlunoDB extends Database{
-    public boolean insertAluno(Aluno aluno){
+public class JogadorBD extends Database{
+
+    public boolean insertJogador(Jogador jogador){
         connect();
-        String sql = "INSERT INTO aluno(nome,ano_nasc,sexo) VALUES (?,?,?)";
+        String sql = "INSERT INTO Jogador(nome) VALUES (?)";
         try{
             pst = connection.prepareStatement(sql);
-            pst.setString(1, aluno.getNome());
-            pst.setInt(2,aluno.getAno_nasc());
-            pst.setString(3,aluno.getSexo());
+            pst.setString(1, jogador.getNome());
             pst.execute();
             check = true;
         }
@@ -31,27 +30,23 @@ public class AlunoDB extends Database{
         return check;
     }
 
-    public ArrayList<Aluno> researchAluno(){
+    public ArrayList<Jogador> researchJogador(){
         connect();
-        ArrayList<Aluno> alunos = new ArrayList<>();
-        String sql = "SELECT * from aluno";
+        ArrayList<Jogador> jogador = new ArrayList<>();
+        String sql = "SELECT * from Jogador";
 
         try{
             statement = connection.createStatement();
             result = statement.executeQuery(sql);
 
             while(result.next()){
-                Aluno alunoTemp = new Aluno(result.getString("nome"),result.getInt("ano_nasc"),result.getString("sexo"));
-                alunoTemp.matricula = result.getInt("matricula");
-                alunoTemp.fk_idcurso = result.getInt("fk_idcurso");
-                System.out.println("Matricula = " + alunoTemp.matricula);
-                System.out.println("Nome = " + alunoTemp.getNome());
-                System.out.println("Ano de nascimento = " + alunoTemp.getAno_nasc());
-                System.out.println("Sexo = " + alunoTemp.getSexo());
-                if(alunoTemp.fk_idcurso > 0)
-                    System.out.println("Curso = " + alunoTemp.fk_idcurso);
+                Jogador jogadorTemp = new Jogador(result.getString("nome"));
+                jogadorTemp.idJogador = result.getInt("idJogador");
+                jogadorTemp.Partida_idPartida = result.getInt("Partida_idPartida");
+                System.out.println("idJogador= " + jogadorTemp.idJogador);
+                System.out.println("Nome = " + jogadorTemp.getNome());
                 System.out.println("-------------------------------");
-                alunos.add(alunoTemp);
+                jogador.add(jogadorTemp);
             }
         }catch(SQLException e){
             System.out.println("Erro de operação: " + e.getMessage());
@@ -66,16 +61,16 @@ public class AlunoDB extends Database{
                 System.out.println("Erro ao fechar a conexão: " + e.getMessage());
             }
         }
-        return alunos;
+        return jogador;
     }
 
-    public boolean updateFkAluno(int matricula, int id_curso){
+    public boolean updateHighScoreAll(int idJogador, double score ){
         connect();
-        String sql = "UPDATE aluno SET fk_idcurso=? WHERE matricula=?";
+        String sql = "UPDATE Jogador SET highScoreAll=? WHERE idJogador=?";
         try{
             pst = connection.prepareStatement(sql);
-            pst.setInt(1, id_curso);
-            pst.setInt(2,matricula);
+            pst.setDouble(1, score);
+            pst.setInt(2,idJogador);
             pst.execute();
             check = true;
         }catch (SQLException e){
@@ -94,12 +89,37 @@ public class AlunoDB extends Database{
         return check;
     }
 
-    public boolean deleteAluno(int matricula){
+    public boolean updateHighScoreContinente(int idJogador, double score ){
         connect();
-        String sql = "DELETE FROM aluno WHERE matricula=?";
+        String sql = "UPDATE Jogador SET highScoreContinente=? WHERE idJogador=?";
         try{
             pst = connection.prepareStatement(sql);
-            pst.setInt(1,matricula);
+            pst.setDouble(1, score);
+            pst.setInt(2,idJogador);
+            pst.execute();
+            check = true;
+        }catch (SQLException e){
+            System.out.println("Erro de operação: " + e.getMessage());
+            check = false;
+        }
+        finally {
+            try{
+                connection.close();
+                pst.close();
+            }
+            catch (SQLException e){
+                System.out.println("Erro ao fechar a conexão: " + e.getMessage());
+            }
+        }
+        return check;
+    }
+
+    public boolean deleteJogador(int idJogador){
+        connect();
+        String sql = "DELETE FROM Jogador WHERE idJogador=?";
+        try{
+            pst = connection.prepareStatement(sql);
+            pst.setInt(1,idJogador);
             pst.execute();
             check = true;
         }catch (SQLException e){
