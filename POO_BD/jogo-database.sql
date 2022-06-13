@@ -30,6 +30,8 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `mydb`.`Partida` (
   `idPartida` INT ZEROFILL NOT NULL AUTO_INCREMENT,
   `modo` BIT(1) NULL,
+  `pontos` DOUBLE ZEROFILL NOT NULL,
+  `time` DOUBLE ZEROFILL NOT NULL,
   `Continente_idContinente` INT ZEROFILL NOT NULL,
   PRIMARY KEY (`idPartida`),
   INDEX `fk_Partida_Continente1_idx` (`Continente_idContinente` ASC) VISIBLE,
@@ -49,8 +51,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Jogador` (
   `nome` VARCHAR(45) NULL,
   `highScoreAll` DOUBLE ZEROFILL NOT NULL,
   `highScoreContinente` DOUBLE ZEROFILL NOT NULL,
-  `pontos` DOUBLE ZEROFILL NOT NULL,
-  `time` DOUBLE ZEROFILL NOT NULL,
   `Partida_idPartida` INT ZEROFILL NOT NULL,
   PRIMARY KEY (`idJogador`),
   INDEX `fk_Jogador_Partida1_idx` (`Partida_idPartida` ASC) VISIBLE,

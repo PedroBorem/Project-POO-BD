@@ -1,6 +1,10 @@
 package br.inatel.C207;
 
+import com.mysql.cj.x.protobuf.MysqlxDatatypes;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
 
 public class Partida {
 
@@ -15,7 +19,7 @@ public class Partida {
     private ArrayList<String> nTem = new ArrayList<>();
     private boolean[] visit = new boolean[4];
     private double in, f;
-    private Palavra palavra;
+    private Palavra palavra = new Palavra();
     
     public Partida(boolean modo) {
         this.modo = modo;
@@ -25,13 +29,17 @@ public class Partida {
         else System.out.println("Partida Paises do Mundo - criada");
 
         in = System.currentTimeMillis();
+        Scanner sc = new Scanner(System.in);
+
         while(visit[0]&&visit[1]&&visit[2]&&visit[3]){
-            System.out.print("País 1: " + this.palavra.palavraView[0] + "    <- "+dist[0]+" ->   ");
-            System.out.println("País 2: " + this.palavra.palavraView[1]);
+            System.out.print("País 1: " + Arrays.toString(this.palavra.palavraView[0]) + "    <- "+dist[0]+" ->   ");
+            System.out.println("País 2: " + Arrays.toString(this.palavra.palavraView[1]));
             System.out.println("         ^                              ^     ");
             System.out.println("      "+dist[1]+"                "+dist[2]+"   ");
-            System.out.print("País 3: " + this.palavra.palavraView[2]+ "    <- "+dist[3]+" ->   ");
-            System.out.println("País 4: " + this.palavra.palavraView[3]);
+            System.out.print("País 3: " + Arrays.toString(this.palavra.palavraView[2]) + "    <- "+dist[3]+" ->   ");
+            System.out.println("País 4: " + Arrays.toString(this.palavra.palavraView[3]));
+            palavra.word = sc.nextLine();
+            verificaLetras();
 
         }
         f = System.currentTimeMillis();
@@ -64,6 +72,10 @@ public class Partida {
     void setNomes(Paises[] paises){
         for (int i = 0; i < 4; i++) {
             this.palavra.nomepais[i] = paises[i].getNome();
+            this.palavra.palavraView[i] = new char[paises[i].getNome().length()];
+            for (int j = 0; j < this.palavra.palavraView[i].length; j++) {
+                Arrays.fill(this.palavra.palavraView[i],'_');
+            }
         }
     }
 
@@ -77,7 +89,7 @@ public class Partida {
                     if (this.palavra.nomepais[i].charAt(j) == this.palavra.word.charAt(k)) {
                         if (j == k) {
                             c++;
-                            this.palavra.palavraView[k] = this.palavra.word.charAt(k);//fixa posição palavra i
+                            this.palavra.palavraView[i][k] = this.palavra.word.charAt(k);//fixa posição palavra i
                             tem.get(i).remove(String.valueOf(this.palavra.word.charAt(k)));
                             if(c == this.palavra.nomepais[i].length()){
                                 this.visit[i] = false;

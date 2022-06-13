@@ -164,7 +164,7 @@ public class PartidaBD extends Database{
 
     public Paises[] getPaises(){
         connect();
-        Paises[] pais = new Paises[4];
+        Paises[] pais = new Paises[5];
         String sql = "SELECT DISTINCT 4 from Paises";
         int i = 0;
         try{

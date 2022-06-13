@@ -10,7 +10,7 @@ public abstract class Database {
 
     static final String user = "root";
     static final String password = "(Root@1234)4321@Root";
-    static final String database = "jogo-database";
+    static final String database = "mydb";
 
     static final String url = "jdbc:mysql://localhost:3306/" + database + "?useTimezone=true&serverTimezone=UTC&useSSL=false";
     public boolean check = false;
