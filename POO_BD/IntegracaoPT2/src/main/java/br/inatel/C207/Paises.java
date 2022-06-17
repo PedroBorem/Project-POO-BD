@@ -5,7 +5,7 @@ public class Paises {
     public int idPaises;
     public int Continente_idContinente;
     private String nome;
-    private double longitude;
+    private double longitude; //Expresse números "N" e "E" com sinal positivo e números "S" e "W" com sinal negativo.
     private double latitude;
 
     public Paises(String nome, double longG, double longM,double longS, double latiG, double latiM, double latiS) {
@@ -20,16 +20,7 @@ public class Paises {
         this.latitude = latitude;
     }
 
-    public Paises(String nome, double longitude, double latitude,boolean f) {
-        this.nome = nome;
-        if(f){
-            this.longitude = longitude;
-            this.latitude = latitude;
-        }else{
-        this.longitude = Math.toRadians(longitude);
-        this.latitude = Math.toRadians(latitude);
-        }
-    }
+    public Paises(){}
 
     public String getNome() {
         return nome;

@@ -1,7 +1,5 @@
 package br.inatel.C207;
 
-import com.mysql.cj.x.protobuf.MysqlxDatatypes;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -18,7 +16,7 @@ public class Partida {
     private ArrayList<ArrayList<String>> tem = new ArrayList<>(); // Posicão k - tabela com a letras que tem da palavra k
     private ArrayList<String> nTem = new ArrayList<>();
     private boolean[] visit = new boolean[4];
-    private double in, f;
+    private double in, f; //tempo inicial e tempo final
     private Palavra palavra = new Palavra();
     
     public Partida(boolean modo) {
@@ -31,18 +29,34 @@ public class Partida {
         in = System.currentTimeMillis();
         Scanner sc = new Scanner(System.in);
 
-        while(visit[0]&&visit[1]&&visit[2]&&visit[3]){
-            System.out.print("País 1: " + Arrays.toString(this.palavra.palavraView[0]) + "    <- "+dist[0]+" ->   ");
+        while(visit[0]||visit[1]||visit[2]||visit[3]){
+            System.out.print("País 1: " + Arrays.toString(this.palavra.palavraView[0]) + "    <- "+dist[0]+"km ->   ");
             System.out.println("País 2: " + Arrays.toString(this.palavra.palavraView[1]));
             System.out.println("         ^                              ^     ");
-            System.out.println("      "+dist[1]+"                "+dist[2]+"   ");
-            System.out.print("País 3: " + Arrays.toString(this.palavra.palavraView[2]) + "    <- "+dist[3]+" ->   ");
+            System.out.println("      "+dist[1]+"km               "+dist[2]+"km   ");
+            System.out.println("         v                              v     ");
+            System.out.print("País 3: " + Arrays.toString(this.palavra.palavraView[2]) + "    <- "+dist[3]+"km ->   ");
             System.out.println("País 4: " + Arrays.toString(this.palavra.palavraView[3]));
+            System.out.print("Digite: ");
             palavra.word = sc.nextLine();
             verificaLetras();
+            System.out.println("####################################################");
+
+            //MOSTRAR TABELA TEM E NTEM
+            for (int i = 0; i < 4; i++) {
+                System.out.println(tem.get(i));
+            }
+
+
 
         }
+        System.out.println("TODAS CERTAS");
         f = System.currentTimeMillis();
+        //MOSTRAR PONTUAÇÃO
+        this.time = (f - in)/1000;
+        this.pontos = this.getPontos()/(this.time * 0.1);
+        System.out.println("Tempo: " + this.time + " s");
+        System.out.println("Pontuação: " + pontos);
 
     }
 
@@ -74,13 +88,13 @@ public class Partida {
             this.palavra.nomepais[i] = paises[i].getNome();
             this.palavra.palavraView[i] = new char[paises[i].getNome().length()];
             for (int j = 0; j < this.palavra.palavraView[i].length; j++) {
-                Arrays.fill(this.palavra.palavraView[i],'_');
+                Palavra.fill(this.palavra.palavraView[i],'_');
             }
         }
     }
 
     void verificaLetras(){
-        String tudo = this.palavra.nomepais[0]+this.palavra.nomepais[1]+this.palavra.nomepais[2]+this.palavra.nomepais[3];
+        String tudo = this.palavra.nomepais[0]+this.palavra.nomepais[1]+this.palavra.nomepais[2]+this.palavra.nomepais[3];//mandar pra config()
         int c = 0;
         for (int i = 0; i < 4; i++) {
             c = 0;

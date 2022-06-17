@@ -9,9 +9,12 @@ public class Jogador implements Comparable<Jogador>{
     private String nome;
     private double highScoreAll;
     private double highScoreContinente;
+    private double highTemp;
 
-    void jogar(Partida p){
-
+    void jogar(boolean modo, Jogador jogador){
+        Partida p = new Partida(modo);
+        Jogador.addRank(jogador);
+        Jogador.buscaPosicao(modo , jogador);
 
     }
 
@@ -45,15 +48,65 @@ public class Jogador implements Comparable<Jogador>{
 
     public static void ordenaRank(){
         Rank rank = new Rank();
-        Collections.sort(rank.getRankAll());
+        for (Jogador jTemp:rank.getRankContinente()) {
+                jTemp.highTemp = jTemp.highScoreContinente;
+            }
         Collections.sort(rank.getRankContinente());
+
+        for (Jogador jTemp : rank.getRankContinente()) {
+                jTemp.highTemp = jTemp.highScoreAll;
+            }
+        Collections.sort(rank.getRankAll());
+    }
+
+    public static void addRank(Jogador jogador){
+        Rank rank = new Rank();
+        rank.getRankAll().add(jogador);
+        rank.getRankContinente().add(jogador);
+        Jogador.ordenaRank();
+    }
+
+    public static void buscaPosicao(boolean modo, Jogador jogador){
+        Rank rank = new Rank();
+        int pos;
+        if (modo){
+            pos  = rank.getRankContinente().indexOf(jogador);
+            if(pos < 1) {
+                for (int i = pos; i < pos + 3; i++) {
+                    System.out.println((i + 1) + " - " + rank.getRankContinente().get(i).nome + "  " + rank.getRankContinente().get(i).highScoreContinente);
+                }
+            }else if (pos == rank.getRankContinente().size()){
+                for (int i = pos-2; i < pos; i++) {
+                    System.out.println((i+1) + " - "+rank.getRankContinente().get(i).nome +"  "+ rank.getRankContinente().get(i).highScoreContinente);
+                }
+            }else {
+                for (int i = pos-2; i < pos+2; i++) {
+                    System.out.println((i+1) + " - "+rank.getRankContinente().get(i).nome +"  "+ rank.getRankContinente().get(i).highScoreContinente);
+                }
+            }
+        }else{
+            pos  = rank.getRankAll().indexOf(jogador);
+            if(pos < 1) {
+                for (int i = pos; i < pos + 3; i++) {
+                    System.out.println((i + 1) + " - " + rank.getRankAll().get(i).nome + "  " + rank.getRankAll().get(i).highScoreAll);
+                }
+            }else if (pos == rank.getRankAll().size()){
+                for (int i = pos-2; i < pos; i++) {
+                    System.out.println((i+1) + " - "+rank.getRankAll().get(i).nome +"  "+ rank.getRankAll().get(i).highScoreAll);
+                }
+            }else {
+                for (int i = pos-2; i < pos+2; i++) {
+                    System.out.println((i+1) + " - "+rank.getRankAll().get(i).nome +"  "+ rank.getRankAll().get(i).highScoreAll);
+                }
+            }
+        }
     }
 
     @Override
     public int compareTo(Jogador o) {
-        if (this.highScoreAll < o.highScoreAll)
+        if (this.highTemp < o.highTemp)
             return 1;
-        if (this.highScoreAll > o.highScoreAll)
+        if (this.highTemp > o.highTemp)
             return -1;
         return 0;
     }

@@ -14,5 +14,13 @@ public class Palavra {
         this.nomepais = nomepais;
     }
 
+    public static void fill(char[] a, char val) {
+        for (int i = 0, len = a.length; i < len; i++) {
+            if(a[i]!= ' ')
+                a[i] = val;
+            else a[i] = ' ';
+        }
+    }
+
 
 }
