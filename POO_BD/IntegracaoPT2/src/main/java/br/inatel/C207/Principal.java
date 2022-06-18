@@ -35,6 +35,10 @@ public class Principal {
                 case 2:
                     System.out.println("Você Saiu!");
                     flag = false;
+                    break;
+                default:
+                    System.out.println("Opção inválida");
+                    break;
 
             }
         }
