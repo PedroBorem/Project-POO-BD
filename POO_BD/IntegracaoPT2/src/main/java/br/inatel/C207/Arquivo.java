@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class Arquivo {
 
         public static ArrayList<Paises> lerPais(){
+
             int i = 0;
             int j = 0;
             ArrayList<Paises> paises = new ArrayList<>();
@@ -16,7 +17,8 @@ public class Arquivo {
             String linhaLer;
 
             try {
-                is = new FileInputStream("listaPaises.txt");
+
+                is = new FileInputStream("C:\\Users\\pedro\\Project-POO-BD\\POO_BD\\listaPaises.txt");
                 isr = new InputStreamReader(is);
                 br = new BufferedReader(isr);
 
@@ -40,7 +42,7 @@ public class Arquivo {
             boolean[] aux = new boolean[j];
             try {
 
-                is = new FileInputStream("latitudesP.txt");
+                is = new FileInputStream("C:\\Users\\pedro\\Project-POO-BD\\POO_BD\\latitudesP.txt");
                 isr = new InputStreamReader(is);
                 br = new BufferedReader(isr);
                 j = 0;
@@ -66,7 +68,7 @@ public class Arquivo {
             }
 
             try {
-                is = new FileInputStream("latitudes.txt");
+                is = new FileInputStream("C:\\Users\\pedro\\Project-POO-BD\\POO_BD\\latitudes.txt");
                 isr = new InputStreamReader(is);
                 br = new BufferedReader(isr);
                 j = 0;
@@ -93,7 +95,7 @@ public class Arquivo {
             }
 
             try {
-                is = new FileInputStream("longitudesP.txt");
+                is = new FileInputStream("C:\\Users\\pedro\\Project-POO-BD\\POO_BD\\longitudesP.txt");
                 isr = new InputStreamReader(is);
                 br = new BufferedReader(isr);
                 j = 0;
@@ -119,7 +121,7 @@ public class Arquivo {
             }
 
             try {
-                is = new FileInputStream("longitudes.txt");
+                is = new FileInputStream("C:\\Users\\pedro\\Project-POO-BD\\POO_BD\\longitudes.txt");
                 isr = new InputStreamReader(is);
                 br = new BufferedReader(isr);
                 j = 0;

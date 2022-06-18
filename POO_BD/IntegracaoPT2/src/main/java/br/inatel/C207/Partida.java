@@ -1,5 +1,6 @@
 package br.inatel.C207;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -9,7 +10,7 @@ public class Partida {
     public int idPartida;
     public int Continente_idContinente;
     private boolean modo;
-    private double pontos = 0;
+    private double pontos = 100000;
     private double time = 0; //tempo
     private double []dist = new double[4];
     private String []nome = new String[4];
@@ -18,45 +19,48 @@ public class Partida {
     private boolean[] visit = new boolean[4];
     private double in, f; //tempo inicial e tempo final
     private Palavra palavra = new Palavra();
+    DecimalFormat formatador = new DecimalFormat("0.00");
     
-    public Partida(boolean modo) {
+    public Partida(boolean modo, Jogador jogador) {
         this.modo = modo;
         ContinenteBD continenteBD = new ContinenteBD();
         int aux = config();
         if(isModo())System.out.println("Partida Paises da "+ continenteBD.getContinenteNome(aux) + " - criada");
-        else System.out.println("Partida Paises do Mundo - criada");
+        else System.out.println("PARTIDA MUNDO");
 
         in = System.currentTimeMillis();
         Scanner sc = new Scanner(System.in);
 
         while(visit[0]||visit[1]||visit[2]||visit[3]){
-            System.out.print("País 1: " + Arrays.toString(this.palavra.palavraView[0]) + "    <- "+dist[0]+"km ->   ");
+            System.out.println(" ");
+            System.out.print("País 1: " + Arrays.toString(this.palavra.palavraView[0]) + "    <- "+formatador.format(dist[0])+"km ->   ");
             System.out.println("País 2: " + Arrays.toString(this.palavra.palavraView[1]));
-            System.out.println("         ^                              ^     ");
-            System.out.println("      "+dist[1]+"km               "+dist[2]+"km   ");
-            System.out.println("         v                              v     ");
-            System.out.print("País 3: " + Arrays.toString(this.palavra.palavraView[2]) + "    <- "+dist[3]+"km ->   ");
-            System.out.println("País 4: " + Arrays.toString(this.palavra.palavraView[3]));
+            System.out.println("         ^                                                                                  ^     ");
+            System.out.println("      "+formatador.format(dist[3])+"km                                                                     "+formatador.format(dist[1])+"km   ");
+            System.out.println("         v                                                                                  v     ");
+            System.out.print("País 3: " + Arrays.toString(this.palavra.palavraView[3]) + "    <- "+formatador.format(dist[2])+"km ->   ");
+            System.out.println("País 4: " + Arrays.toString(this.palavra.palavraView[2]));
             System.out.print("Digite: ");
             palavra.word = sc.nextLine();
             verificaLetras();
-            System.out.println("####################################################");
+            System.out.println(" ");
+            System.out.println(" ");
 
             //MOSTRAR TABELA TEM E NTEM
-            for (int i = 0; i < 4; i++) {
-                System.out.println(tem.get(i));
-            }
-
-
+           // for (int i = 0; i < 4; i++) {
+                //System.out.println(tem.get(i));
+            //}
 
         }
         System.out.println("TODAS CERTAS");
         f = System.currentTimeMillis();
         //MOSTRAR PONTUAÇÃO
         this.time = (f - in)/1000;
-        this.pontos = this.getPontos()/(this.time * 0.1);
+        this.pontos /= (this.time * 0.1);
         System.out.println("Tempo: " + this.time + " s");
-        System.out.println("Pontuação: " + pontos);
+        System.out.println("Pontuação: " + formatador.format(this.pontos));
+        if(modo)jogador.setHighScoreContinente(this.pontos);
+        else jogador.setHighScoreAll(this.pontos);
 
     }
 
@@ -73,9 +77,11 @@ public class Partida {
         } else {
             for (int i = 0; i < 4; i++) {
                 visit[i] = true;
-                PartidaBD partidaBD = new PartidaBD();
-                p = partidaBD.getPaises();
+
+
             }
+            PartidaBD partidaBD = new PartidaBD();
+            p = partidaBD.getPaises();
         }
         p[4] = p[0];
         calcDist(p);
@@ -104,12 +110,12 @@ public class Partida {
                         if (j == k) {
                             c++;
                             this.palavra.palavraView[i][k] = this.palavra.word.charAt(k);//fixa posição palavra i
-                            tem.get(i).remove(String.valueOf(this.palavra.word.charAt(k)));
+                            //tem.get(i).remove(String.valueOf(this.palavra.word.charAt(k)));
                             if(c == this.palavra.nomepais[i].length()){
                                 this.visit[i] = false;
                             }
                         } else {
-                            tem.get(i).add(String.valueOf(this.palavra.word.charAt(k)));//tabela tem
+                            //tem.get(i).add(String.valueOf(this.palavra.word.charAt(k)));//tabela tem
                         }
                     }
                 }
@@ -131,8 +137,8 @@ public class Partida {
     void calcDist(Paises[] paises){
 
         double[] deltaLongitude = new double[4];
-        for (int i = 0; i < 5; i++) {
-            deltaLongitude[i] = paises[i].getLongitude() - paises[i+1].getLatitude();
+        for (int i = 0; i < 4; i++) {
+            deltaLongitude[i] = paises[i].getLongitude() - paises[i+1].getLongitude();
         }
         for (int i = 0; i < 4; i++) {
             double EARTH_RADIUS_KM = 6371.0;

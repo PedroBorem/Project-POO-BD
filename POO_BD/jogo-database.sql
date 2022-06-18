@@ -70,14 +70,8 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Paises` (
   `nome` VARCHAR(45) NULL,
   `longitude` DOUBLE NULL,
   `latitude` DOUBLE NULL,
-  `Continente_idContinente` INT ZEROFILL NOT NULL,
-  PRIMARY KEY (`idPaises`),
-  INDEX `fk_Pais_Continente1_idx` (`Continente_idContinente` ASC) VISIBLE,
-  CONSTRAINT `fk_Pais_Continente1`
-    FOREIGN KEY (`Continente_idContinente`)
-    REFERENCES `mydb`.`Continente` (`idContinente`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  PRIMARY KEY (`idPaises`)
+  )
 ENGINE = InnoDB;
 
 
@@ -136,5 +130,7 @@ ENGINE = InnoDB;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+select * from Paises;
+
+

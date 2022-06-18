@@ -2,16 +2,15 @@ package br.inatel.C207;
 
 public class Palavra {
     String word;
-    String[] nomepais;
+    String[] nomepais = new String[4];
     char[][] palavraView = new char[4][];
 
     public Palavra(){
 
     }
 
-    public Palavra(String word, String [] nomepais) {
+    public Palavra(String word, String nomepais) {
         this.word = word;
-        this.nomepais = nomepais;
     }
 
     public static void fill(char[] a, char val) {
@@ -21,6 +20,8 @@ public class Palavra {
             else a[i] = ' ';
         }
     }
+
+
 
 
 }

@@ -30,64 +30,6 @@ public class PartidaBD extends Database{
         return check;
     }
 
-    public ArrayList<Partida> researchPartida(){
-        connect();
-        ArrayList<Partida> partidas = new ArrayList<>();
-        String sql = "SELECT * from Partida";
-
-        try{
-            statement = connection.createStatement();
-            result = statement.executeQuery(sql);
-
-            while(result.next()){
-                Partida partidaTemp = new Partida(result.getBoolean("modo"));
-                partidaTemp.idPartida = result.getInt("idPartida");
-                partidaTemp.Continente_idContinente = result.getInt("Continente_idContinente");
-                System.out.println("idPartida= " + partidaTemp.idPartida);
-                System.out.println("Modo = " + partidaTemp.isModo());
-                System.out.println("-------------------------------");
-                partidas.add(partidaTemp);
-            }
-        }catch(SQLException e){
-            System.out.println("Erro de operação: " + e.getMessage());
-        }
-        finally {
-            try{
-                connection.close();
-                statement.close();
-                result.close();
-            }
-            catch (SQLException e){
-                System.out.println("Erro ao fechar a conexão: " + e.getMessage());
-            }
-        }
-        return partidas;
-    }
-
-    public boolean updateModo(int idPartida, boolean modo ){
-        connect();
-        String sql = "UPDATE Partida SET modo=? WHERE idPartida=?";
-        try{
-            pst = connection.prepareStatement(sql);
-            pst.setInt(2,idPartida);
-            pst.execute();
-            check = true;
-        }catch (SQLException e){
-            System.out.println("Erro de operação: " + e.getMessage());
-            check = false;
-        }
-        finally {
-            try{
-                connection.close();
-                pst.close();
-            }
-            catch (SQLException e){
-                System.out.println("Erro ao fechar a conexão: " + e.getMessage());
-            }
-        }
-        return check;
-    }
-
     public boolean updateHighScoreContinente(int idJogador, double score ){
         connect();
         String sql = "UPDATE Jogador SET highScoreContinente=? WHERE idJogador=?";
@@ -165,15 +107,19 @@ public class PartidaBD extends Database{
     public Paises[] getPaises(){
         connect();
         Paises[] pais = new Paises[5];
-        String sql = "SELECT DISTINCT 4 from Paises";
+        String sql = "SELECT * FROM Paises ORDER BY RAND() LIMIT 4";
         int i = 0;
         try{
             statement = connection.createStatement();
             result = statement.executeQuery(sql);
 
             while(result.next()){
-                Paises paisTemp = new Paises(result.getString("nome"),result.getDouble("longitude"),result.getDouble("latitude"));
+                Paises paisTemp = new Paises();
+                paisTemp.setNome(result.getString("nome"));
+                paisTemp.setLatitude(result.getDouble("latitude"));
+                paisTemp.setLongitude(result.getDouble("longitude"));
                 paisTemp.idPaises = result.getInt("idPaises");
+                System.out.println(paisTemp.getNome());
                 System.out.println("-------------------------------");
                 pais[i] = paisTemp;
                 i++;

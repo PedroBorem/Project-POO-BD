@@ -14,7 +14,7 @@ public class Paises {
         this.latitude = Math.toRadians(latiG + (latiM/60) + (latiS/3600));
     }
 
-    public Paises(String nome, double longitude, double latitude) {
+    public Paises(String nome, double latitude, double longitude) {
         this.nome = nome;
         this.longitude = longitude;
         this.latitude = latitude;
